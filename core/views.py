@@ -1,9 +1,7 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def home(request):
-  return HttpResponse("Welcome to Community Share! Choose: Request Help or Offer Service")
+    return render(request, "home.html")
 
 def feed(request):
-  return HttpResponse("This is the feed page.")
-
-# Create your views here.
+    return render(request, "feed.html")
