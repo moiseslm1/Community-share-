@@ -5,3 +5,6 @@ def home(request):
 
 def feed(request):
     return render(request, "feed.html")
+
+def guidelines(request):
+    return render(request, "guidelines.html")
