@@ -8,3 +8,9 @@ def feed(request):
 
 def guidelines(request):
     return render(request, "guidelines.html")
+
+def request(request):
+    return render(request, "request.html")
+
+def offer(request):
+    return render(request, "offer.html")
