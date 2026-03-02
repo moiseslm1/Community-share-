@@ -14,3 +14,6 @@ def request(request):
 
 def offer(request):
     return render(request, "offer.html")
+    
+def events(request):
+    return render(request, "events.html")
