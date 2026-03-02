@@ -16,9 +16,9 @@
 
      <style>
         :root{
-            --brand: #0b7a5a;
-            --brand-dark: #075a44;
-            --mint: #dff5ee;
+            --brand: #6b7fce;
+            --brand-dark: #17031e;
+            --blu: #cacae2;
             --ink: #0f172a;
             --sidebar-width: 240px;
         }
@@ -43,7 +43,7 @@
         }
 
         .hero {
-            background: radial-gradient(circle at 85% 20%, #b9f3df 0%, transparent 40%),
+            background: radial-gradient(circle at 85% 20%, #b9e3f3 0%, transparent 40%),
                         radial-gradient(circle at 10% 60%, #c7e6ff 0%, transparent 45%),
                         linear-gradient(180deg, #ffffff 0%, #f6fffb 100%);
             border-bottom: 1px solid rgba(15, 23, 42, .06);
@@ -142,7 +142,7 @@
             border-radius: 14px;
             display: grid;
             place-items: center;
-            background: var(--mint);
+            background: var(--blu);
             color: var(--brand-dark);
             font-weight: 900;
         }
@@ -173,7 +173,7 @@
             height: 100vh;
             width: 0;
             overflow: hidden;
-            background: linear-gradient(180deg,#ffffff,var(--mint));
+            background: linear-gradient(180deg,#ffffff,var(--blu));
             box-shadow: 2px 0 18px rgba(2,6,23,0.06);
             transition: width .25s ease;
             z-index: 1050;
@@ -239,6 +239,7 @@
                 <a href="{% url 'guidelines' %}" class="{% if request.path == '/guidelines/' %}active{% endif %}">Guidelines</a>
                 <a href="{% url 'request' %}" class="{% if request.path == '/request/' %}active{% endif %}">Request Service</a>
                 <a href="{% url 'offer' %}" class="{% if request.path == '/offer/' %}active{% endif %}">Offer Service</a>
+                <a href="{% url 'events' %}" class="{% if request.path == '/events/' %}active{% endif %}">Community Events</a>
                 <a href="/admin/">Admin</a> <!-- Should probaly change this part to login info at some point -->
             </nav>
         </div>
@@ -292,4 +293,3 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
