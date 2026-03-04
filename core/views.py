@@ -5,3 +5,15 @@ def home(request):
 
 def feed(request):
     return render(request, "feed.html")
+
+def guidelines(request):
+    return render(request, "guidelines.html")
+
+def request(request):
+    return render(request, "request.html")
+
+def offer(request):
+    return render(request, "offer.html")
+    
+def events(request):
+    return render(request, "events.html")
