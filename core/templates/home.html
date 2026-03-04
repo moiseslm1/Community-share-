@@ -12,7 +12,7 @@
       <form class="search-pill d-flex align-items-stretch" action="/feed/" method="get">
         <input
           type="text"  
-          class="form-control"
+          class="form-control flex-grow-1"
           name="q"
           list="task-suggestions"
           placeholder="What do you need help with?"
@@ -31,6 +31,13 @@
           <option value="Heavy Lifting & Loading"></option>
           <option value="Electrical help"></option> -->
         </datalist>
+
+        <!-- First Dropdown: Zip code Category -->
+         <select name="category" class="form-select w-auto flex-grow-0">
+          <option value=""selected hidden>Zip Code (e.g., 94102)</option>
+          <option value="zipcode1">90747</option>
+          <option value="zipcode2">90001</option>
+        </select>
 
         <button class="btn btn-brand" type="submit" aria-label="Search">
           <!-- simple magnifier -->
