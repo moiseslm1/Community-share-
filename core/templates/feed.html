@@ -2,19 +2,85 @@
 {% block title %}Feed · Community Share{% endblock %}
 
 {% block content %}
-<div class="container py-4">
+
+<div class="container-fluid py-4">
+
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
     <div>
       <h1 class="fw-bold mb-1">Community Feed</h1>
-      <div class="text-muted">Search query: <b>{{ request.GET.q|default:"(none)" }}</b></div>
+      <div class="text-muted">
+        Search query: <b>{{ request.GET.q|default:"(none)" }}</b>
+      </div>
     </div>
+
     <a class="btn btn-brand" href="/">Back Home</a>
   </div>
 
   <hr class="my-4">
 
-  <div class="alert alert-light border">
-    Next we’ll connect this feed to real posts from the database.
+  <div class="row">
+
+    <!-- LEFT SIDE: Service Feed -->
+    <div class="col-md-6">
+
+      <div class="alert alert-light border">
+        Next we’ll connect this feed to real posts from the database.
+      </div>
+
+      <!-- Example cards -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Dog Walking</h5>
+          <p class="card-text text-muted">Available in zip code 90001</p>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">House Cleaning</h5>
+          <p class="card-text text-muted">Available in zip code 90747</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- RIGHT SIDE: MAP -->
+    <div class="col-md-6">
+         <div id="map" style="height:600px;"></div>
+    </div>
+
   </div>
+
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibW9pc2VzbG0xIiwiYSI6ImNtbWZ0cGVpODBjNnQyb25kMzR4ZTJ3MjAifQ.gEBfxdCjJmgC4meVLUh7Kg'; 
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v12',
+  center: [-118.2437, 34.0522],
+  zoom: 10
+});
+
+const services = [
+  { name: "Dog Walking", coords: [-118.25, 34.05] },
+  { name: "Cleaning", coords: [-118.28, 34.06] }
+];
+
+services.forEach(service => {
+  new mapboxgl.Marker()
+    .setLngLat(service.coords)
+    .setPopup(new mapboxgl.Popup().setText(service.name))
+    .addTo(map);
+});
+
+});
+
+</script>
+
 {% endblock %}
