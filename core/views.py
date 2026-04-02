@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import JobListingForm
 
 def home(request):
-    return render(request, "home.html")
+    return render (request, "home.html")
 
 def feed(request):
     return render(request, "feed.html")
@@ -17,3 +18,14 @@ def offer(request):
     
 def events(request):
     return render(request, "events.html")
+
+def create_job(request):
+    if request.method == 'POST':
+        form = JobListingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = JobListingForm()
+
+    return render(request, 'offer.html', {'form': form})

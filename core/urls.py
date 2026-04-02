@@ -8,4 +8,5 @@ urlpatterns = [
     path("offer/", views.offer, name="offer"),
     path("request/", views.request, name="request"),
     path("events/", views.events, name="events"),
+    path('jobs/create/', views.offer, name='create_job'),
 ]
