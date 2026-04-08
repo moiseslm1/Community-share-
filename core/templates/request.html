@@ -3,19 +3,54 @@
 
 {% block content %}
 <div class="container">
-    
+
   <h1 class="heading">Everyone Needs a Helping Hand!</h1>
 
-<!--Guidelines for Requesting-->
- <section>
-    <h2>Request a Service</h2>
-    <ul style="list-style-type:circle;">
-      <li>Be clear and specific about what you need.</li>
-      <li>Include deadlines and expectations.</li>
-      <li>Communicate respectfully.</li>
-      <li>Provide feedback after completion.</li>
-    </ul>
-  </section>
+  <style>
+    .request-box {
+      border: 1px solid rgba(15, 23, 42, .1);
+      border-radius: 16px;
+      padding: 28px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(2, 6, 23, .05);
+      margin-bottom: 2rem;
+    }
+
+    .request-box h2 {
+      color: var(--brand);
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .request-box ul {
+      margin-bottom: 0;
+    }
+
+    .request-box li {
+      margin-bottom: 12px;
+      color: rgba(15, 23, 42, .8);
+      line-height: 1.6;
+    }
+  </style>
+
+  <div class="d-flex justify-content-center">
+    <div class="request-box" style="max-width: 600px;">
+      <h2>Request a Service</h2>
+      <ul style="list-style-type:circle;">
+        <li>Be clear and specific about what you need.</li>
+        <li>Include deadlines and expectations.</li>
+        <li>Communicate respectfully.</li>
+        <li>Provide feedback after completion.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="text-center" style="margin-top: 3rem;">
+    <button class="btn btn-primary btn-lg px-5 py-3" style="background-color: #007bff; border-color: #007bff; font-size: 1.25rem; font-weight: 600;">
+      Request Service
+    </button>
+  </div>
+
     <h2>Insert Process Here</h2>
     </section>
     <a class="btn btn-brand" href="/">Back Home</a>

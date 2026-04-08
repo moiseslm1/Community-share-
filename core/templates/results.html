@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Search Results · Community Share{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="heading-center">Results</h1>
+
+  <div class="text-center my-5">
+    <div class="alert alert-info" role="alert" style="max-width: 600px; margin: 0 auto;">
+      <h4 class="alert-heading">No results found</h4>
+      <p>Try searching for different keywords or browse our categories below.</p>
+      <hr>
+      <div class="d-flex justify-content-center gap-2 flex-wrap">
+        <a href="{% url 'category' 'assembly' %}" class="btn btn-outline-primary">Assembly</a>
+        <a href="{% url 'category' 'cleaning' %}" class="btn btn-outline-primary">Cleaning</a>
+        <a href="{% url 'category' 'cooking' %}" class="btn btn-outline-primary">Cooking</a>
+        <a href="{% url 'category' 'mounting' %}" class="btn btn-outline-primary">Mounting</a>
+        <a href="{% url 'category' 'moving' %}" class="btn btn-outline-primary">Moving</a>
+        <a href="{% url 'category' 'outdoor-maintenance' %}" class="btn btn-outline-primary">Outdoor Maintenance</a>
+        <a href="{% url 'category' 'repairs' %}" class="btn btn-outline-primary">Repairs</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a class="btn btn-brand" href="/">Back Home</a>
+  </div>
+</div>
+{% endblock %}

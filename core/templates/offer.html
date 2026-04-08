@@ -3,20 +3,53 @@
 
 {% block content %}
 <div class="container">
-    
-  <h1 class="heading">Thank you for helping our Community!</h1>
 
-<!-- Guidelines for Offering-->
- <section>
-    
-    <h2>For Those Offering a Service</h2>
-    <ul style="list-style-type:circle;">
-      <li>Be honest about your skills and availability.</li>
-      <li>Respond promptly to messages.</li>
-      <li>Deliver services as promised.</li>
-      <li>Maintain professional communication.</li>
-    </ul>
-  </section>
+  <h1 class="heading-center">Thank you for helping our Community!</h1>
+
+  <style>
+    .offer-box {
+      border: 1px solid rgba(15, 23, 42, .1);
+      border-radius: 16px;
+      padding: 28px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(2, 6, 23, .05);
+    }
+
+    .offer-box h2 {
+      color: var(--brand);
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .offer-box ul {
+      margin-bottom: 0;
+    }
+
+    .offer-box li {
+      margin-bottom: 12px;
+      color: rgba(15, 23, 42, .8);
+      line-height: 1.6;
+    }
+  </style>
+
+  <div class="d-flex justify-content-center">
+    <div class="offer-box" style="max-width: 600px;">
+      <h2>For Those Offering a Service</h2>
+      <ul style="list-style-type:circle;">
+        <li>Be honest about your skills and availability.</li>
+        <li>Respond promptly to messages.</li>
+        <li>Deliver services as promised.</li>
+        <li>Maintain professional communication.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="text-center" style="margin-top: 3rem;">
+    <button class="btn btn-primary btn-lg px-5 py-3" style="background-color: #007bff; border-color: #007bff; font-size: 1.25rem; font-weight: 600;">
+      Offer Service
+    </button>
+  </div>
+
    <h2>Create a Job Listing</h2>
 
     <form method="post">
