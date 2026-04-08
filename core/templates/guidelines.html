@@ -2,39 +2,160 @@
 {% block title %}Guidelines · Community Share{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h1 class="heading">Thank you for joining our Community!</h1>
 
-<!--Guidelines for Requesting-->
- <section>
-    <h2>Request a Service</h2>
-    <ul style="list-style-type:circle;">
-      <li>Be clear and specific about what you need.</li>
-      <li>Include deadlines and expectations.</li>
-      <li>Communicate respectfully.</li>
-      <li>Provide feedback after completion.</li>
-    </ul>
-  </section>
+<style>
 
-<!-- Guidelines for Offering-->
- <section>
-    <h2>For Those Offering a Service</h2>
-    <ul style="list-style-type:circle;">
-      <li>Be honest about your skills and availability.</li>
-      <li>Respond promptly to messages.</li>
-      <li>Deliver services as promised.</li>
-      <li>Maintain professional communication.</li>
-    </ul>
-  </section>
+  .contain {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+    align-items: flex-start;
+  }
 
-<!--FAQs Section-->
- <section>
-    <h2>Frequently Asked Questions (FAQ)</h2>
-    <h4>How do I request a service?</h4>
-    <p>Answer.</p>
-    <h4>How do I offer a service?</h4>
-    <p>Answer.</p>
-  </section>
-  <a class="btn btn-brand" href="/">Back Home</a>
+  .con_tent {
+    max-width: 800px;
+    margin: 40px auto 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #eee;
+  }
+
+  .faq-question {
+    width: 100%;
+    padding: 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #1e4d92;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-question:hover {
+    color: #16cd50;
+  }
+
+  .faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .faq-item.active .faq-answer {
+    max-height: 200px;
+    padding-bottom: 20px;
+  }
+
+  .faq-item.active .faq-question::after {
+    content: '-';
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-size: 1.5rem;
+  }
+
+  ul {
+    text-align: left;
+    padding-left: 0;
+    list-style-position: inside;
+    display: inline-block;
+  }
+
+  .heading {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: white;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #1e4d92 0%, #4a90e2 100%);
+    text-align: center;
+  }
+
+
+</style>
+
+  <header class="heading">
+    <h1> Thank you for joining our Community!</h1>
+  </header>
+
+  <div class="contain">
+    <!--Guidelines for Requesting-->
+    <section>
+      <h2>Request a Service</h2>
+      <ul style="list-style-type:circle;">
+        <li>Be clear and specific about what you need.</li>
+        <li>Include deadlines and expectations.</li>
+        <li>Communicate respectfully.</li>
+        <li>Provide feedback after completion.</li>
+      </ul>
+    </section>
+
+    <!-- Guidelines for Offering-->
+    <section>
+      <h2>For Those Offering a Service</h2>
+      <ul style="list-style-type:circle;">
+        <li>Be honest about your skills and availability.</li>
+        <li>Respond promptly to messages.</li>
+        <li>Deliver services as promised.</li>
+        <li>Maintain professional communication.</li>
+      </ul>
+    </section>
 </div>
+
+  <div class="con_tent">
+    <!--FAQs Section-->
+    <section>
+      <h2>Frequently Asked Questions (FAQ)</h2>
+        <div class="faq-item">
+          <button class="faq-question">How do I request a service?</button>
+          <div class="faq-answer">
+            <p>Answer.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">How do I offer a service?</button>
+          <div class="faq-answer">
+            <p>Answer.</p>
+          </div>
+        </div>
+    </section>
+    <a class="btn btn-brand" href="/">Back Home</a>
+  </div>
+
+  <script>
+        // Basic script to handle the accordion toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const button = item.querySelector('.faq-question');
+            button.addEventListener('click', () => {
+                // Toggle current item
+                item.classList.toggle('active');
+                
+                // Optional: Close other items when one is opened
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+            });
+        });
+  </script>
 {% endblock %}
