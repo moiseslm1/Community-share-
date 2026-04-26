@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Search Results · Lightning Quest{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">Search Results</h1>
+      {% if query %}
+        <p class="text-muted mb-0">
+          Results for <strong>"{{ query }}"</strong>
+          {% if zip_code %}in zip code <strong>{{ zip_code }}</strong>{% endif %}
+        </p>
+      {% endif %}
+    </div>
+    <a class="btn btn-brand" href="/">Back Home</a>
+  </div>
+
+  <hr class="mb-4">
+
+  {% if not searched %}
+    <!-- State 1: User landed here without searching -->
+    <div class="text-center my-5">
+      <i class="fa fa-magnifying-glass fa-3x text-muted mb-3"></i>
+      <h4 class="text-muted">Use the search bar above to find services</h4>
+    </div>
+
+  {% elif services %}
+    <!-- State 2: Results found — show ONLY matching services -->
+    <p class="text-muted mb-3">{{ services.count }} service{{ services.count|pluralize }} found</p>
+    <div class="row g-3">
+      {% for service in services %}
+        <div class="col-12 col-md-6">
+          <div class="card h-100 border">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <h5 class="card-title mb-1">{{ service.title }}</h5>
+                <span class="badge bg-secondary">{{ service.get_category_display }}</span>
+              </div>
+              <p class="text-muted small mb-2">
+                <i class="fa fa-location-dot me-1"></i>Zip code {{ service.zip_code }}
+              </p>
+              <p class="card-text">{{ service.description }}</p>
+              <small class="text-muted">Posted by {{ service.posted_by.username }}</small>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <!-- State 3: Searched but nothing matched -->
+    <div class="text-center my-5">
+      <div class="alert alert-warning" style="max-width: 600px; margin: 0 auto;">
+        <h4 class="alert-heading">No services found</h4>
+        <p class="mb-3">
+          <strong>"{{ query }}"</strong> 
+          {% if zip_code %}in zip code <strong>{{ zip_code }}</strong>{% endif %}
+          doesn't match any available services.
+        </p>
+        <hr>
+        <p class="mb-2">You could:</p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+          <a href="/" class="btn btn-brand">Search again</a>
+          <a href="/offer/" class="btn btn-outline-secondary">Be the first to offer it</a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

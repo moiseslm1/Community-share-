@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import JobListing, Service
 
-# Register your models here.
+admin.site.register(JobListing)
+admin.site.register(Service)

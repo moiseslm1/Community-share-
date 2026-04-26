@@ -1,31 +1,32 @@
 {% extends "base.html" %}
-{% block title %}Offer a Service · Community Share{% endblock %}
+{% block title %}Request a Service · Community Share{% endblock %}
 
 {% block content %}
 <div class="container">
 
-  <h1 class="heading-center">Thank you for helping our Community!</h1>
+  <h1 class="heading">Everyone Needs a Helping Hand!</h1>
 
   <style>
-    .offer-box {
+    .request-box {
       border: 1px solid rgba(15, 23, 42, .1);
       border-radius: 16px;
       padding: 28px;
       background: #fff;
       box-shadow: 0 4px 12px rgba(2, 6, 23, .05);
+      margin-bottom: 2rem;
     }
 
-    .offer-box h2 {
+    .request-box h2 {
       color: var(--brand);
       margin-bottom: 18px;
       font-weight: 700;
     }
 
-    .offer-box ul {
+    .request-box ul {
       margin-bottom: 0;
     }
 
-    .offer-box li {
+    .request-box li {
       margin-bottom: 12px;
       color: rgba(15, 23, 42, .8);
       line-height: 1.6;
@@ -33,26 +34,25 @@
   </style>
 
   <div class="d-flex justify-content-center">
-    <div class="offer-box" style="max-width: 600px;">
-      <h2>For Those Offering a Service</h2>
+    <div class="request-box" style="max-width: 600px;">
+      <h2>Request a Service</h2>
       <ul style="list-style-type:circle;">
-        <li>Be honest about your skills and availability.</li>
-        <li>Respond promptly to messages.</li>
-        <li>Deliver services as promised.</li>
-        <li>Maintain professional communication.</li>
+        <li>Be clear and specific about what you need.</li>
+        <li>Include deadlines and expectations.</li>
+        <li>Communicate respectfully.</li>
+        <li>Provide feedback after completion.</li>
       </ul>
     </div>
   </div>
 
   <div class="text-center" style="margin-top: 3rem;">
     <button class="btn btn-primary btn-lg px-5 py-3" style="background-color: #007bff; border-color: #007bff; font-size: 1.25rem; font-weight: 600;">
-      Offer Service
+      Request Service
     </button>
   </div>
-        <br/>
-   <br/>
-    </form>
-   </section>
-   <a class="btn btn-brand" href="/">Back Home</a>
+
+    <br>
+  <br>
+    <a class="btn btn-brand" href="/">Back Home</a>
 </div>
 {% endblock %}

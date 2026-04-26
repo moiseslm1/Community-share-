@@ -9,51 +9,45 @@
 
     <div class="search-wrap">
       <!-- Search form (no backend yet; looks real) -->
-      <form class="search-pill d-flex align-items-stretch" action="/feed/" method="get">
-        <input
-          type="text"  
-          class="form-control flex-grow-1"
-          name="q"
-          list="task-suggestions"
-          placeholder="What do you need help with?"
-          autocomplete="off"
-        />
-        <datalist id="task-suggestions">
-          <option value="Outdoor Maintenance"></option>
-          <option value="Indoor Cleaning"></option>
-          <option value="Cooking"></option>
-          <option value="General Mounting"></option>
-          <!-- While we discuss more task categories to add
-          <option value="Truck Assisted Help Moving"></option>
-          <option value="Help Moving"></option>
-          <option value="Cleaning"></option>
-          <option value="Door, Cabinet, & Furniture Repair"></option>
-          <option value="Heavy Lifting & Loading"></option>
-          <option value="Electrical help"></option> -->
-        </datalist>
+      <form class="search-pill d-flex align-items-stretch" action="/results/" method="get">
+  <input
+    type="text"  
+    class="form-control flex-grow-1"
+    name="q"
+    list="task-suggestions"
+    placeholder="What do you need help with?"
+    autocomplete="off"
+    value="{{ request.GET.q }}"
+  />
+  <datalist id="task-suggestions">
+    <option value="Outdoor Maintenance"></option>
+    <option value="Indoor Cleaning"></option>
+    <option value="Cooking"></option>
+    <option value="General Mounting"></option>
+    <option value="Moving"></option>
+  </datalist>
 
-        <!-- First Dropdown: Zip code Category -->
-         <select name="category" class="form-select w-auto flex-grow-0">
-          <option value=""selected hidden>Zip Code (e.g., 94102)</option>
-          <option value="zipcode1">90747</option>
-          <option value="zipcode2">90001</option>
-        </select>
+  <!-- Fix the values to send actual zip codes -->
+  <select name="zip" class="form-select w-auto flex-grow-0">
+    <option value="" selected hidden>Zip Code</option>
+    <option value="90747">90747</option>
+    <option value="90001">90001</option>
+  </select>
 
-        <button class="btn btn-brand" type="submit" aria-label="Search">
-          <!-- simple magnifier -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-          </svg>
-        </button>
-      </form>
+  <button class="btn btn-brand" type="submit" aria-label="Search">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+    </svg>
+  </button>
+</form>
 
       <!-- Popular chips -->
       <div class="d-flex chip-row mt-3">
-        <a class="chip" href="/feed/?q=Outdoor+Maintenance">Outdoor Maintenance</a>
-        <a class="chip" href="/feed/?q=Indoor+Cleaning">Indoor Cleaning</a>
-        <a class="chip" href="/feed/?q=Cooking">Cooking</a>
-        <a class="chip" href="/feed/?q=Assembly">Assembly</a>
-        <a class="chip" href="/feed/?q=Repairs">Repairs</a>
+        <a class="chip" href="{% url 'feed'%}?category=outdoor-maintenance">Outdoor Maintenance</a>
+        <a class="chip" href="{% url 'feed' %}?category=cleaning">Indoor Cleaning</a>
+        <a class="chip" href="{% url 'feed' %}?category=cooking">Cooking</a>
+        <a class="chip" href="{% url 'feed' %}?category=assembly">Assembly</a>
+        <a class="chip" href="{% url 'feed' %}?category=repairs">Repairs</a>
       </div>
     </div>
   </div>
@@ -72,78 +66,121 @@
     <div class="row g-3">
       <!-- Assembly -->
       <div class="col-12 col-sm-6 col-lg-3">
-        <div class="category-card">
-          <div class="d-flex gap-3">
-            <div class="icon-badge">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-            </div>
-            <div>
-              <div class="fw-bold">Assembly</div>
-              <div class="text-muted small">Furniture, shelves, desks</div>
+        <a href="{% url 'category' 'assembly' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-screwdriver-wrench"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Assembly</div>
+                <div class="text-muted small">Furniture, shelves, desks</div>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- Mounting -->
       <div class="col-12 col-sm-6 col-lg-3">
-        <div class="category-card">
-          <div class="d-flex gap-3">
-            <div class="icon-badge">
-                <i class="fa-solid fa-tv"></i>
-            </div>
-            <div>
-              <div class="fw-bold">Mounting</div>
-              <div class="text-muted small">TVs, frames, shelves</div>
+        <a href="{% url 'category' 'mounting' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-tv"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Mounting</div>
+                <div class="text-muted small">TVs, frames, shelves</div>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
-      <!-- Cleaning / Cooking -->
+      <!-- Cleaning -->
       <div class="col-12 col-sm-6 col-lg-3">
-        <div class="category-card">
-          <div class="d-flex gap-3">
-            <div class="icon-badge">
-                <i class="fa-solid fa-broom"></i>
-            </div>
-            <div>
-              <div class="fw-bold">Cleaning</div>
-              <div class="text-muted small">Home &amp; Apartment</div>
-              <div class="fw-bold">Cooking</div>
+        <a href="{% url 'category' 'cleaning' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-broom"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Cleaning</div>
+                <div class="text-muted small">Home &amp; Apartment</div>     
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- Outdoor Maintenance -->
       <div class="col-12 col-sm-6 col-lg-3">
-        <div class="category-card">
-          <div class="d-flex gap-3">
-            <div class="icon-badge">
-                <i class="fa-solid fa-leaf"></i>
-            </div>
-            <div>
-              <div class="fw-bold">Outdoor Maintenance</div>
-              <div class="text-muted small">Gardens, Lawn care</div>
+        <a href="{% url 'category' 'outdoor-maintenance' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-leaf"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Outdoor Maintenance</div>
+                <div class="text-muted small">Gardens, Lawn care</div>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- Repairs -->
       <div class="col-12 col-sm-6 col-lg-3">
-        <div class="category-card">
-          <div class="d-flex gap-3">
-            <div class="icon-badge">
-                <i class="fa-solid fa-hammer"></i>
-            </div>
-            <div>
-              <div class="fw-bold">Repairs</div>
-              <div class="text-muted small">Fixes &amp; small jobs</div>
+        <a href="{% url 'category' 'repairs' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-hammer"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Repairs</div>
+                <div class="text-muted small">Fixes &amp; small jobs</div>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
+      </div>
+
+      <!-- Moving -->
+      <div class="col-12 col-sm-6 col-lg-3">
+        <a href="{% url 'category' 'moving' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-truck"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Moving</div>
+                <div class="text-muted small">Heavy lifting &amp; transport</div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!--Cooking -->
+      <div class="col-12 col-sm-6 col-lg-3">
+        <a href="{% url 'category' 'cooking' %}" style="text-decoration: none; color: inherit;">
+          <div class="category-card">
+            <div class="d-flex gap-3">
+              <div class="icon-badge">
+                  <i class="fa-solid fa-utensils"></i>
+              </div>
+              <div>
+                <div class="fw-bold">Cooking</div>
+                <div class="text-muted small">Home Cooked Meals </div>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
 
     </div>
