@@ -233,10 +233,14 @@
                 <div class="d-flex gap-2 align-items-center">
                     {% if user.is_authenticated %}
                         <span class="me-3">Welcome, {{ user.username }}!</span>
-                        <a href="/admin/logout/" class="btn btn-outline-danger">Logout</a>
+
+                        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Logout</button>
+                        </form>
                     {% else %}
-                        <a href="/admin/login/" class="btn btn-brand">Login</a>
-                        <a href="/admin/register/" class="btn btn-outline-secondary">Sign Up</a>
+                        <a href="{% url 'login' %}" class="btn btn-brand">Login</a>
+                        <a href="{% url 'signup' %}" class="btn btn-outline-secondary">Sign Up</a>
                     {% endif %}
                 </div>
             </div>

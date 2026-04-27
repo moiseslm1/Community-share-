@@ -35,3 +35,21 @@ class Service(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.zip_code})"
+
+class Booking(models.Model):
+    service=models.ForeignKey(Service, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    booked_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} booked {self.service.title}"
+
+class Review(models.Model):
+    service=models.ForeignKey(Service, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    rating=models.IntegerField()
+    comment=models.TextField(blank=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.rating} stars for {self.service.title}"

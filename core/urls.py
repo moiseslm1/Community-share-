@@ -11,4 +11,6 @@ urlpatterns = [
     path("events/", views.events, name="events"),
     path("category/<str:category_slug>/", views.category, name="category"),
     path('jobs/create/', views.offer, name='create_job'),
+    path('create-service/', views.create_service, name='create_service'),
+    path('signup/', views.signup, name='signup'),
 ]
