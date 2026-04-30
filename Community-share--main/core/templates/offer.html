@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Offer a Service · Community Share{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <h1 class="heading-center">Thank you for helping our Community!</h1>
+
+  <style>
+    .offer-box {
+      border: 1px solid rgba(15, 23, 42, .1);
+      border-radius: 16px;
+      padding: 28px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(2, 6, 23, .05);
+    }
+
+    .offer-box h2 {
+      color: var(--brand);
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .offer-box ul {
+      margin-bottom: 0;
+    }
+
+    .offer-box li {
+      margin-bottom: 12px;
+      color: rgba(15, 23, 42, .8);
+      line-height: 1.6;
+    }
+
+    .offer-service-btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      border: 2px solid #007bff;
+      padding: 14px 48px;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .offer-service-btn:hover {
+      background-color: white;
+      color: #007bff;
+      border: 2px solid #007bff;
+    }
+  </style>
+
+  <div class="d-flex justify-content-center">
+    <div class="offer-box" style="max-width: 600px;">
+      <h2>For Those Offering a Service</h2>
+      <ul style="list-style-type:circle;">
+        <li>Be honest about your skills and availability.</li>
+        <li>Respond promptly to messages.</li>
+        <li>Deliver services as promised.</li>
+        <li>Maintain professional communication.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="text-center" style="margin-top: 3rem;">
+    <a href="{% url 'create_service' %}" class="offer-service-btn">
+      Offer Service
+    </a>
+  </div>
+
+  <br/>
+  <br/>
+
+  <a class="btn btn-brand" href="/">Back Home</a>
+
+</div>
+{% endblock %}
