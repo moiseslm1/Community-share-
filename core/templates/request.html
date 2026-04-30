@@ -1,77 +1,58 @@
 {% extends "base.html" %}
-{% block title %}Request a Service · Community Share{% endblock %}
+{% block title %}Request a Service · Lightning Quest{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-5" style="max-width: 600px;">
+  <h1 class="fw-bold mb-1">Request a Service</h1>
+  <p class="text-muted mb-4">Tell the community what you need help with.</p>
 
-  <h1 class="heading">Everyone Needs a Helping Hand!</h1>
+  <div class="card shadow-sm p-4">
+    <form method="POST">
+      {% csrf_token %}
 
-  <style>
-    .request-box {
-      border: 1px solid rgba(15, 23, 42, .1);
-      border-radius: 16px;
-      padding: 28px;
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(2, 6, 23, .05);
-      margin-bottom: 2rem;
-    }
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Title</label>
+        {{ form.title }}
+      </div>
 
-    .request-box h2 {
-      color: var(--brand);
-      margin-bottom: 18px;
-      font-weight: 700;
-    }
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Category</label>
+        {{ form.category }}
+      </div>
 
-    .request-box ul {
-      margin-bottom: 0;
-    }
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Description</label>
+        {{ form.description }}
+        <div class="form-text">Be specific about what you need, when, and any requirements.</div>
+      </div>
 
-    .request-box li {
-      margin-bottom: 12px;
-      color: rgba(15, 23, 42, .8);
-      line-height: 1.6;
-    }
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Zip Code</label>
+        {{ form.zip_code }}
+      </div>
 
-    .offer-service-btn {
-      display: inline-block;
-      background-color: #007bff;
-      color: white;
-      border: 2px solid #007bff;
-      padding: 14px 48px;
-      border-radius: 8px;
-      font-size: 1.25rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+      {% endif %}
 
-    .offer-service-btn:hover {
-      background-color: white;
-      color: #007bff;
-      border: 2px solid #007bff;
-    }
-  </style>
-
-  <div class="d-flex justify-content-center">
-    <div class="request-box" style="max-width: 600px;">
-      <h2>Request a Service</h2>
-      <ul style="list-style-type:circle;">
-        <li>Be clear and specific about what you need.</li>
-        <li>Include deadlines and expectations.</li>
-        <li>Communicate respectfully.</li>
-        <li>Provide feedback after completion.</li>
-      </ul>
-    </div>
+      <button type="submit" class="btn btn-brand w-100">Post Request</button>
+    </form>
   </div>
-
-  <div class="text-center" style="margin-top: 3rem;">
-    <a href="#" class="offer-service-btn">
-      Request Service
-    </a>
-  </div>
-
-    <br>
-  <br>
-    <a class="btn btn-brand" href="/">Back Home</a>
 </div>
+
+<style>
+  input, select, textarea {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid rgba(15,23,42,.2);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(107,127,206,.15);
+  }
+</style>
 {% endblock %}

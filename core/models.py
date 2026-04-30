@@ -28,13 +28,28 @@ class Service(models.Model):
     description = models.TextField(blank=True)
     category    = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     zip_code    = models.CharField(max_length=10)
+    address = models.CharField(max_length=300, blank=True)
     latitude    = models.FloatField(null=True, blank=True)
     longitude   = models.FloatField(null=True, blank=True)
     posted_by   = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at  = models.DateTimeField(auto_now_add=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+
+    
 
     def __str__(self):
         return f"{self.title} ({self.zip_code})"
+    
+class ServiceRequest(models.Model):
+    title       = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    category    = models.CharField(max_length=50, choices=Service.CATEGORY_CHOICES)
+    zip_code    = models.CharField(max_length=10)
+    posted_by   = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at  = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Request: {self.title} by {self.posted_by.username}"
 
 class Booking(models.Model):
     service=models.ForeignKey(Service, on_delete=models.CASCADE)

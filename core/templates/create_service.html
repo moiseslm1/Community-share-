@@ -1,16 +1,70 @@
 {% extends "base.html" %}
+{% block title %}Offer a Service · Lightning Quest{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>Offer a Service</h1>
+<div class="container mt-5" style="max-width: 600px;">
+  <h1 class="fw-bold mb-1">Offer a Service</h1>
+  <p class="text-muted mb-4">Fill in the details below so your community can find you.</p>
 
+  <div class="card shadow-sm p-4">
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+      {% csrf_token %}
 
-        <button type="submit" class="btn btn-primary">
-            Submit Service
-        </button>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Title</label>
+        {{ form.title }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Category</label>
+        {{ form.category }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Description</label>
+        {{ form.description }}
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Address <span class="text-muted fw-normal">(used to place your pin on the map)</span></label>
+        {{ form.address }}
+        <div class="form-text">e.g. 123 Main St, Los Angeles, CA — your exact address is never shown publicly.</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Zip Code</label>
+        {{ form.zip_code }}
+        <div class="form-text">Used to place your pin on the map.</div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Phone Number <span class="text-muted fw-normal">(optional)</span></label>
+        {{ form.phone_number }}
+        <div class="form-text">So people can contact you directly.</div>
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <button type="submit" class="btn btn-brand w-100">Post Service</button>
     </form>
+  </div>
 </div>
+
+<style>
+  input, select, textarea {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid rgba(15,23,42,.2);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(107,127,206,.15);
+  }
+</style>
 {% endblock %}

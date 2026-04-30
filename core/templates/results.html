@@ -20,42 +20,82 @@
   <hr class="mb-4">
 
   {% if not searched %}
-    <!-- State 1: User landed here without searching -->
     <div class="text-center my-5">
       <i class="fa fa-magnifying-glass fa-3x text-muted mb-3"></i>
       <h4 class="text-muted">Use the search bar above to find services</h4>
     </div>
 
   {% elif services %}
-    <!-- State 2: Results found — show ONLY matching services -->
     <p class="text-muted mb-3">{{ services.count }} service{{ services.count|pluralize }} found</p>
-    <div class="row g-3">
-      {% for service in services %}
-        <div class="col-12 col-md-6">
-          <div class="card h-100 border">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-start">
-                <h5 class="card-title mb-1">{{ service.title }}</h5>
-                <span class="badge bg-secondary">{{ service.get_category_display }}</span>
+    <div class="row">
+
+      <!-- LEFT: Service cards -->
+      <div class="col-md-6" style="max-height:600px; overflow-y:auto;">
+
+        {% if services_with_coords %}
+          {% for service in services_with_coords %}
+            <div class="card mb-3 service-card" style="cursor:pointer;"
+                 data-index="{{ forloop.counter0 }}">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h5 class="card-title mb-1">{{ service.title }}</h5>
+                  <span class="badge bg-secondary">{{ service.get_category_display }}</span>
+                </div>
+                <p class="text-muted small mb-2">
+                  <i class="fa fa-location-dot me-1"></i>Zip code {{ service.zip_code }}
+                </p>
+                <p class="card-text">{{ service.description }}</p>
+                <small class="text-muted">Posted by {{ service.posted_by.username }}</small>
+                {% if service.phone_number %}
+                  <div class="mt-2">
+                    <i class="fa fa-phone me-1 text-muted"></i>
+                    <small><a href="tel:{{ service.phone_number }}">{{ service.phone_number }}</a></small>
+                  </div>
+                {% endif %}
               </div>
-              <p class="text-muted small mb-2">
-                <i class="fa fa-location-dot me-1"></i>Zip code {{ service.zip_code }}
-              </p>
-              <p class="card-text">{{ service.description }}</p>
-              <small class="text-muted">Posted by {{ service.posted_by.username }}</small>
             </div>
-          </div>
-        </div>
-      {% endfor %}
+          {% endfor %}
+        {% endif %}
+
+        {% if services_without_coords %}
+          {% for service in services_without_coords %}
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h5 class="card-title mb-1">{{ service.title }}</h5>
+                  <span class="badge bg-secondary">{{ service.get_category_display }}</span>
+                </div>
+                <p class="text-muted small mb-2">
+                  <i class="fa fa-location-dot me-1"></i>Zip code {{ service.zip_code }}
+                </p>
+                <p class="card-text">{{ service.description }}</p>
+                <small class="text-muted">Posted by {{ service.posted_by.username }}</small>
+                {% if service.phone_number %}
+                  <div class="mt-2">
+                    <i class="fa fa-phone me-1 text-muted"></i>
+                    <small><a href="tel:{{ service.phone_number }}">{{ service.phone_number }}</a></small>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+
+      <!-- RIGHT: Map -->
+      <div class="col-md-6">
+        <div id="map" style="height:600px;"></div>
+      </div>
+
     </div>
 
   {% else %}
-    <!-- State 3: Searched but nothing matched -->
     <div class="text-center my-5">
       <div class="alert alert-warning" style="max-width: 600px; margin: 0 auto;">
         <h4 class="alert-heading">No services found</h4>
         <p class="mb-3">
-          <strong>"{{ query }}"</strong> 
+          <strong>"{{ query }}"</strong>
           {% if zip_code %}in zip code <strong>{{ zip_code }}</strong>{% endif %}
           doesn't match any available services.
         </p>
@@ -69,5 +109,81 @@
     </div>
   {% endif %}
 
+  {% if requests %}
+    <h5 class="mt-5 mb-3 fw-bold text-muted">Community Requests</h5>
+    <p class="text-muted mb-3">{{ requests.count }} request{{ requests.count|pluralize }} found</p>
+    <div class="row g-3">
+      {% for req in requests %}
+        <div class="col-12 col-md-6">
+          <div class="card h-100 border-warning">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <h5 class="card-title mb-1">{{ req.title }}</h5>
+                <span class="badge bg-warning text-dark">Request</span>
+              </div>
+              <p class="text-muted small mb-2">
+                <i class="fa fa-location-dot me-1"></i>Zip code {{ req.zip_code }}
+              </p>
+              <p class="card-text">{{ req.description }}</p>
+              <small class="text-muted">Requested by {{ req.posted_by.username }}</small>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
 </div>
+
+{% if searched and services_with_coords %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  mapboxgl.accessToken = 'pk.eyJ1IjoibW9pc2VzbG0xIiwiYSI6ImNtbWZ0cGVpODBjNnQyb25kMzR4ZTJ3MjAifQ.gEBfxdCjJmgC4meVLUh7Kg';
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [-118.2437, 34.0522],
+    zoom: 10
+  });
+
+  const pins = {{ map_pins|safe }};
+  const markers = [];
+
+  if (pins.length > 0) {
+    pins.forEach((s, i) => {
+      const popup = new mapboxgl.Popup().setHTML(
+        `<strong>${s.name}</strong><br>${s.category}<br>Zip: ${s.zip}
+         ${s.phone ? `<br><a href="tel:${s.phone}">📞 ${s.phone}</a>` : ''}`
+      );
+      const marker = new mapboxgl.Marker()
+        .setLngLat(s.coords)
+        .setPopup(popup)
+        .addTo(map);
+      markers.push({ marker, coords: s.coords });
+    });
+
+    if (pins.length > 1) {
+      const bounds = pins.reduce((b, s) => b.extend(s.coords),
+        new mapboxgl.LngLatBounds(pins[0].coords, pins[0].coords));
+      map.fitBounds(bounds, { padding: 60 });
+    } else {
+      map.setCenter(pins[0].coords);
+      map.setZoom(13);
+    }
+  }
+
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', function () {
+      const i = parseInt(this.dataset.index);
+      if (markers[i]) {
+        map.flyTo({ center: markers[i].coords, zoom: 14 });
+        markers[i].marker.togglePopup();
+      }
+    });
+  });
+});
+</script>
+{% endif %}
+
 {% endblock %}
