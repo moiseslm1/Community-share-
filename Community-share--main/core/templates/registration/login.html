@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 500px;">
+  <h1 class="text-center mb-4">Login</h1>
+
+  <style>
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+
+      font-weight: 500;
+      text-decoration: none;
+      color: black;
+
+      transition: all 0.2s ease;
+    }
+
+    .social-btn:hover {
+      background: #f5f5f5;
+      border-color: #ccc;
+    }
+
+    .social-icon {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+
+  <div class="card shadow-sm p-4">
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="btn btn-primary w-100">
+        Login
+      </button>
+    </form>
+
+    <div class="d-flex align-items-center my-4">
+      <hr class="flex-grow-1">
+      <span class="mx-3 text-muted">OR</span>
+      <hr class="flex-grow-1">
+    </div>
+
+    <!-- Google -->
+    <a href="#" class="social-btn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png" class="social-icon">
+      Continue with Google
+    </a>
+
+    <!-- Facebook -->
+    <a href="#" class="social-btn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" class="social-icon">
+      Continue with Facebook
+    </a>
+
+    <!-- Apple -->
+    <a href="#" class="social-btn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="social-icon">
+      Continue with Apple
+    </a>
+
+    <p class="text-center mt-3 mb-0">
+      Don’t have an account?
+      <a href="{% url 'signup' %}">Sign up</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
