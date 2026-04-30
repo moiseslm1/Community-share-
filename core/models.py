@@ -24,22 +24,21 @@ class Service(models.Model):
         ('cooking',             'Cooking'),
     ]
 
-    title       = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    category    = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    zip_code    = models.CharField(max_length=10)
-    address = models.CharField(max_length=300, blank=True)
-    latitude    = models.FloatField(null=True, blank=True)
-    longitude   = models.FloatField(null=True, blank=True)
-    posted_by   = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at  = models.DateTimeField(auto_now_add=True)
+    title        = models.CharField(max_length=200)
+    description  = models.TextField(blank=True)
+    category     = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    address      = models.CharField(max_length=300, blank=True)
+    zip_code     = models.CharField(max_length=10)
     phone_number = models.CharField(max_length=20, blank=True)
-
-    
+    latitude     = models.FloatField(null=True, blank=True)
+    longitude    = models.FloatField(null=True, blank=True)
+    posted_by    = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at   = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.title} ({self.zip_code})"
-    
+
+
 class ServiceRequest(models.Model):
     title       = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -51,34 +50,22 @@ class ServiceRequest(models.Model):
     def __str__(self):
         return f"Request: {self.title} by {self.posted_by.username}"
 
+
 class Booking(models.Model):
-    service=models.ForeignKey(Service, on_delete=models.CASCADE)
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
-    booked_at=models.DateTimeField(auto_now_add=True)
+    service   = models.ForeignKey(Service, on_delete=models.CASCADE)
+    user      = models.ForeignKey(User, on_delete=models.CASCADE)
+    booked_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.username} booked {self.service.title}"
 
+
 class Review(models.Model):
-    service=models.ForeignKey(Service, on_delete=models.CASCADE)
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
-    rating=models.IntegerField()
-    comment=models.TextField(blank=True)
-    created_at=models.DateTimeField(auto_now_add=True)
+    service    = models.ForeignKey(Service, on_delete=models.CASCADE)
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating     = models.IntegerField()
+    comment    = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.rating} stars for {self.service.title}"
-    
-# Community Events
-class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    caption = models.TextField()
-    image = models.ImageField(upload_to="post_images/")
-    created_at = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
-
-    def total_likes(self):
-        return self.likes.count()
-
-    def __str__(self):
-        return f"{self.user.username} - {self.created_at}"

@@ -1,16 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.db.models import Q
-from .models import Service, Post
-from .forms import ServiceForm
+from .models import Service, ServiceRequest
+from .forms import ServiceForm, ServiceRequestForm, SignUpForm
 from django.contrib.auth.decorators import login_required
-from .forms import SignUpForm, PostForm
 from django.contrib.auth import login
 import json
-import requests as http_requests 
-from .models import Service, ServiceRequest
-from .forms import ServiceForm, ServiceRequestForm
-from .models import Service, ServiceRequest
 import random
+import requests as http_requests
 
 CATEGORIES = {
     'assembly': {
@@ -61,6 +57,7 @@ CATEGORIES = {
 def home(request):
     return render(request, "home.html")
 
+
 def feed(request):
     category = request.GET.get('category', '').strip()
     services = Service.objects.all()
@@ -70,33 +67,35 @@ def feed(request):
         services = services.filter(category=category)
         requests_qs = requests_qs.filter(category=category)
 
-    services_with_coords = [s for s in services if s.latitude and s.longitude]
+    services_with_coords    = [s for s in services if s.latitude and s.longitude]
     services_without_coords = [s for s in services if not s.latitude or not s.longitude]
 
     map_pins = json.dumps([
-    {
-        'name': s.title,
-        'category': s.get_category_display(),
-        'zip': s.zip_code,
-        'phone': s.phone_number,
-        'coords': [
-            s.longitude + random.uniform(-0.005, 0.005),
-            s.latitude + random.uniform(-0.005, 0.005),
-        ],
-    }
-    for s in services_with_coords
-])
+        {
+            'name': s.title,
+            'category': s.get_category_display(),
+            'zip': s.zip_code,
+            'phone': s.phone_number,
+            'coords': [
+                s.longitude + random.uniform(-0.003, 0.003),
+                s.latitude  + random.uniform(-0.003, 0.003),
+            ],
+        }
+        for s in services_with_coords
+    ])
 
     return render(request, 'feed.html', {
+        'services': services,
         'services_with_coords': services_with_coords,
         'services_without_coords': services_without_coords,
-        'services': services,
         'requests': requests_qs,
         'map_pins': map_pins,
     })
 
+
 def guidelines(request):
     return render(request, "guidelines.html")
+
 
 @login_required
 def request_service(request):
@@ -111,50 +110,14 @@ def request_service(request):
         form = ServiceRequestForm()
     return render(request, 'request.html', {'form': form})
 
+
 def offer(request):
     return render(request, "offer.html")
 
+
 def events(request):
-    posts = Post.objects.order_by("-created_at")
-    return render(request, "events.html", {"posts": posts})
+    return render(request, "events.html")
 
-@login_required
-def create_post(request):
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = request.user
-            post.save()
-            return redirect("events")
-    else:
-        form = PostForm()
-
-    return render(request, "create_post.html", {"form": form})
-
-@login_required
-def like_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-
-    if request.user in post.likes.all():
-        post.likes.remove(request.user)
-    else:
-        post.likes.add(request.user)
-
-    return redirect("events")
-
-@login_required
-def delete_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-
-    # only allow the owner to delete
-    if post.user != request.user:
-        return redirect("events")
-
-    if request.method == "POST":
-        post.delete()
-
-    return redirect("events")
 
 def results(request):
     query    = request.GET.get('q', '').strip()
@@ -198,8 +161,8 @@ def results(request):
             'zip': s.zip_code,
             'phone': s.phone_number,
             'coords': [
-                s.longitude + random.uniform(-0.007, 0.007),
-                s.latitude  + random.uniform(-0.007, 0.007),
+                s.longitude + random.uniform(-0.003, 0.003),
+                s.latitude  + random.uniform(-0.003, 0.003),
             ],
         }
         for s in services_with_coords
@@ -215,10 +178,13 @@ def results(request):
         'searched': searched,
         'map_pins': map_pins,
     })
+
+
 def category(request, category_slug):
     cat = CATEGORIES.get(category_slug)
     services = Service.objects.filter(category=category_slug)
     return render(request, 'category.html', {'category': cat, 'slug': category_slug, 'services': services})
+
 
 @login_required
 def create_service(request):
@@ -228,26 +194,26 @@ def create_service(request):
             service = form.save(commit=False)
             service.posted_by = request.user
 
-            # Geocode the address using Nominatim
             address = (form.cleaned_data.get('address') or '') + ', ' + form.cleaned_data.get('zip_code') + ', USA'
             try:
                 geo = http_requests.get(
-                'https://nominatim.openstreetmap.org/search',
-                params={'q': address, 'format': 'json', 'limit': 1},
-                headers={'User-Agent': 'LightningQuest/1.0'},
-                timeout=5
+                    'https://nominatim.openstreetmap.org/search',
+                    params={'q': address, 'format': 'json', 'limit': 1},
+                    headers={'User-Agent': 'LightningQuest/1.0'},
+                    timeout=5
                 ).json()
                 if geo:
                     service.latitude  = float(geo[0]['lat'])
                     service.longitude = float(geo[0]['lon'])
             except Exception:
-                pass  # coords stay null, pin just won't show
+                pass
 
             service.save()
             return redirect('home')
     else:
         form = ServiceForm()
     return render(request, 'create_service.html', {'form': form})
+
 
 def signup(request):
     if request.method == "POST":
@@ -258,5 +224,4 @@ def signup(request):
             return redirect("home")
     else:
         form = SignUpForm()
-
     return render(request, "signup.html", {"form": form})

@@ -1,8 +1,7 @@
 from django import forms
-from .models import JobListing, Service, Post
+from .models import JobListing, Service, ServiceRequest
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import JobListing, Service, ServiceRequest 
 
 class JobListingForm(forms.ModelForm):
     class Meta:
@@ -13,6 +12,11 @@ class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
         fields = ['title', 'description', 'category', 'address', 'zip_code', 'phone_number']
+
+class ServiceRequestForm(forms.ModelForm):
+    class Meta:
+        model = ServiceRequest
+        fields = ['title', 'description', 'category', 'zip_code']
 
 class SignUpForm(UserCreationForm):
     class Meta:
