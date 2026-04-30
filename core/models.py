@@ -53,3 +53,17 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.rating} stars for {self.service.title}"
+    
+# Community Events
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    caption = models.TextField()
+    image = models.ImageField(upload_to="post_images/")
+    created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
+
+    def total_likes(self):
+        return self.likes.count()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.created_at}"
