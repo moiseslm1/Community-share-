@@ -22,17 +22,30 @@
     <h2 class="fw-bold mb-4">Browse {{ category.name }} Services</h2>
     
     <div class="row g-3">
-      <!-- This will later be populated with actual listings from the database -->
-      <div class="col-12">
-        <div class="alert alert-info" role="alert">
-          <strong>{{ category.name }} services coming soon!</strong> Browse available services and requests for this category or post your own.
+  {% if services %}
+    {% for service in services %}
+      <div class="col-12 col-md-6">
+        <div class="card h-100 border">
+          <div class="card-body">
+            <h5 class="card-title mb-1">{{ service.title }}</h5>
+            <p class="text-muted small mb-1">
+              <i class="fa fa-location-dot me-1"></i>Zip {{ service.zip_code }}
+            </p>
+            {% if service.description %}
+              <p class="card-text small">{{ service.description }}</p>
+            {% endif %}
+            <small class="text-muted">Posted by {{ service.posted_by.username }}</small>
+          </div>
         </div>
       </div>
+    {% endfor %}
+  {% else %}
+    <div class="col-12">
+      <div class="alert alert-info">
+        No {{ category.name }} services yet. 
+        <a href="{% url 'offer' %}">Be the first to offer one!</a>
+      </div>
     </div>
-
-    <div class="mt-5 text-center">
-      <a class="btn btn-outline-secondary" href="{% url 'home' %}">Back to Home</a>
-    </div>
-  </div>
-</section>
+  {% endif %}
+</div>
 {% endblock %}

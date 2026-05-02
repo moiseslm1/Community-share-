@@ -1,17 +1,244 @@
 {% extends "base.html" %}
 {% block title %}Community Events · Community Share{% endblock %}
-{% block content %}
-<div class="container">
-    
-  <h1 class="heading">Thank you for being a part of our Community!</h1>
 
-<!-- Format kinda like a feed but shows events, parties, fundraisers hosted, etc.-->
- <section>
-    
-    <h2>Insert title here</h2>
-    <ul style="list-style-type:circle;">
-      <li>Add picture above and make post description here</li>
-    </ul>
-   <a class="btn btn-brand" href="/">Back Home</a>
+{% block content %}
+<div class="container py-4">
+
+  <h1 class="mb-4 text-center fw-bold" style="color: var(--brand-dark);">
+    Thank you for being a part of our Community!
+  </h1>
+
+  <div class="d-flex justify-content-end mb-4">
+  <a href="{% url 'create_post' %}" class="btn btn-brand rounded-pill px-4">
+    Create Post
+  </a>
+</div>
+
+ <!--  REAL USER POSTS -->
+
+  {% for post in posts %}
+    <div class="card mb-4 mx-auto border-0 shadow-sm"
+         style="max-width: 720px; border-radius: 20px;">
+      <div class="card-body p-4">
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+          display:flex;align-items:center;justify-content:center;font-weight:bold;">
+            {{ post.user.username|slice:":1"|upper }}
+          </div>
+          <div>
+            <div class="fw-bold">{{ post.user.username }}</div>
+            {% if post.created_at %}
+              <div class="text-muted small">
+                {{ post.created_at|date:"M d, Y • g:i A" }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if post.image %}
+          <img src="{{ post.image.url }}"
+               class="img-fluid mb-3"
+               style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+        {% endif %}
+
+        <p>{{ post.caption }}</p>
+
+        <div class="d-flex gap-2">
+
+          <form method="post" action="{% url 'like_post' post.id %}">
+            {% csrf_token %}
+            <button type="submit"
+                    class="btn btn-sm rounded-pill"
+                    style="border:1px solid var(--brand);">
+              👍 {{ post.total_likes }}
+            </button>
+          </form>
+
+          <button type="button"
+                  class="btn btn-sm rounded-pill"
+                  onclick="navigator.clipboard.writeText(window.location.href)">
+            ↗ Share
+          </button>
+
+          {% if post.user == request.user %}
+            <form method="post" action="{% url 'delete_post' post.id %}">
+              {% csrf_token %}
+              <button type="submit"
+                      class="btn btn-sm rounded-pill text-danger"
+                      onclick="return confirm('Delete this post?')">
+                🗑 Delete
+              </button>
+            </form>
+          {% endif %}
+
+        </div>
+
+      </div>
+    </div>
+
+  <!-- 🔥 FAKE / DEMO POSTS -->
+  <div class="card mb-4 mx-auto border-0 shadow-sm" style="max-width: 720px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+        display:flex;align-items:center;justify-content:center;font-weight:bold;">
+          A
+        </div>
+        <div>
+          <div class="fw-bold">Alex</div>
+        </div>
+      </div>
+
+      <img src="/media/post_images/mowedGrass.jpg"
+           class="img-fluid mb-3"
+           style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+
+      <p>My lawn has never looked better!</p>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm rounded-pill" style="border:1px solid var(--brand);">
+          👍 10
+        </button>
+        <button class="btn btn-sm rounded-pill">
+          ↗ Share
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+<div class="card mb-4 mx-auto border-0 shadow-sm" style="max-width: 720px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+        display:flex;align-items:center;justify-content:center;font-weight:bold;">
+          E
+        </div>
+        <div>
+          <div class="fw-bold">Evan</div>
+        </div>
+      </div>
+
+      <img src="/media/post_images/washerRepair.jpg"
+           class="img-fluid mb-3"
+           style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+
+      <p>Looking forward to using my machine again. Excellent repair work!</p>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm rounded-pill" style="border:1px solid var(--brand);">
+          👍 13
+        </button>
+        <button class="btn btn-sm rounded-pill">
+          ↗ Share
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card mb-4 mx-auto border-0 shadow-sm" style="max-width: 720px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+        display:flex;align-items:center;justify-content:center;font-weight:bold;">
+          R
+        </div>
+        <div>
+          <div class="fw-bold">Rita</div>
+        </div>
+      </div>
+
+      <img src="/media/post_images/movinghelp.jpg"
+           class="img-fluid mb-3"
+           style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+
+      <p>Made a stressful day so much easier</p>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm rounded-pill" style="border:1px solid var(--brand);">
+          👍 12
+        </button>
+        <button class="btn btn-sm rounded-pill">
+          ↗ Share
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card mb-4 mx-auto border-0 shadow-sm" style="max-width: 720px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+        display:flex;align-items:center;justify-content:center;font-weight:bold;">
+          L
+        </div>
+        <div>
+          <div class="fw-bold">Lizzy</div>
+        </div>
+      </div>
+
+      <img src="/media/post_images/homeCook.jpg"
+           class="img-fluid mb-3"
+           style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+
+      <p>The food was delicious. We finished every bite. :)</p>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm rounded-pill" style="border:1px solid var(--brand);">
+          👍 14
+        </button>
+        <button class="btn btn-sm rounded-pill">
+          ↗ Share
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card mb-4 mx-auto border-0 shadow-sm" style="max-width: 720px; border-radius: 20px;">
+    <div class="card-body p-4">
+
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+        display:flex;align-items:center;justify-content:center;font-weight:bold;">
+          J
+        </div>
+        <div>
+          <div class="fw-bold">James</div>
+          </div>
+      </div>
+
+      <img src="/media/post_images/fenceRepair.jpg"
+           class="img-fluid mb-3"
+           style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+
+      <p>Had a great time helping out this weekend!</p>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm rounded-pill" style="border:1px solid var(--brand);">
+          👍 7
+        </button>
+        <button class="btn btn-sm rounded-pill">
+          ↗ Share
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+ 
+  {% empty %}
+    <div class="text-center mt-5">
+      <p class="text-muted">No posts yet.</p>
+    </div>
+  {% endfor %}
+
 </div>
 {% endblock %}
