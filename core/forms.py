@@ -1,5 +1,5 @@
 from django import forms
-from .models import JobListing, Service, ServiceRequest
+from .models import JobListing, Service, ServiceRequest, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -22,3 +22,13 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['job_title', 'date_of_birth', 'city', 'zipcode', 'biography']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'biography': forms.Textarea(attrs={'rows': 4}),
+        }

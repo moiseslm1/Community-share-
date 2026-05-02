@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile · Community Share{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 800px;">
+  <!-- Profile Header -->
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1 class="mb-3">My Profile</h1>
+      <p class="text-muted">Manage your personal information and profile details</p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
+    </div>
+  </div>
+
+  <!-- Profile Form -->
+  <div class="card">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Profile Information</h5>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Basic User Info (Read-only) -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">First Name</label>
+            <input type="text" class="form-control" value="{{ user.first_name }}" readonly>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Last Name</label>
+            <input type="text" class="form-control" value="{{ user.last_name }}" readonly>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Email</label>
+            <input type="email" class="form-control" value="{{ user.email }}" readonly>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Username</label>
+            <input type="text" class="form-control" value="{{ user.username }}" readonly>
+          </div>
+        </div>
+
+        <!-- Editable Profile Fields -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="{{ form.job_title.id_for_label }}" class="form-label fw-bold">Job Title</label>
+            {{ form.job_title }}
+            {% if form.job_title.errors %}
+              <div class="text-danger">{{ form.job_title.errors }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label fw-bold">Date of Birth</label>
+            {{ form.date_of_birth }}
+            {% if form.date_of_birth.errors %}
+              <div class="text-danger">{{ form.date_of_birth.errors }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="{{ form.city.id_for_label }}" class="form-label fw-bold">City</label>
+            {{ form.city }}
+            {% if form.city.errors %}
+              <div class="text-danger">{{ form.city.errors }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="{{ form.zipcode.id_for_label }}" class="form-label fw-bold">Zip Code</label>
+            {{ form.zipcode }}
+            {% if form.zipcode.errors %}
+              <div class="text-danger">{{ form.zipcode.errors }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="{{ form.biography.id_for_label }}" class="form-label fw-bold">Biography</label>
+          <div class="d-flex justify-content-center">
+            <div style="width: 80%; max-width: 600px;">
+              {{ form.biography }}
+              {% if form.biography.errors %}
+                <div class="text-danger">{{ form.biography.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-text text-center">Tell others about yourself, your skills, and what you can offer to the community.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+          <a href="{% url 'admin:logout' %}" class="btn btn-danger">Logout</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Additional Info -->
+  <div class="card mt-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Account Details</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <strong>Member Since:</strong><br>
+          {{ user.date_joined|date:"F d, Y" }}
+        </div>
+        <div class="col-md-6">
+          <strong>Last Login:</strong><br>
+          {{ user.last_login|date:"F d, Y \a\t g:i A" }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control[readonly] {
+    background-color: #f8f9fa;
+    opacity: 0.7;
+  }
+</style>
+
+{% endblock %}

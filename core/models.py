@@ -69,3 +69,33 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.rating} stars for {self.service.title}"
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    job_title = models.CharField(max_length=100, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    zipcode = models.CharField(max_length=10, blank=True)
+    biography = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s profile"
+
+
+class UserJobHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job_title = models.CharField(max_length=100)
+    company = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    is_current = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.job_title} at {self.company} ({self.user.username})"
+
+    class Meta:
+        ordering = ['-start_date']

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from .models import Service, ServiceRequest
-from .forms import ServiceForm, ServiceRequestForm, SignUpForm
+from .models import Service, ServiceRequest, UserProfile, UserJobHistory
+from .forms import ServiceForm, ServiceRequestForm, SignUpForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 import json
@@ -225,3 +225,45 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, "signup.html", {"form": form})
+
+
+@login_required
+def profile(request):
+    # Get or create user profile
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'Profile.html', {
+        'form': form,
+        'profile': profile,
+    })
+
+
+@login_required
+def job_history(request):
+    from datetime import datetime, timedelta
+    
+    # Get jobs from the last year
+    one_year_ago = datetime.now().date() - timedelta(days=365)
+    jobs = UserJobHistory.objects.filter(
+        user=request.user,
+        start_date__gte=one_year_ago
+    ).order_by('-start_date')
+    
+    # Calculate statistics
+    current_jobs = jobs.filter(is_current=True).count()
+    completed_jobs = jobs.filter(end_date__isnull=False).count()
+    
+    return render(request, 'job_history.html', {
+        'jobs': jobs,
+        'one_year_ago': one_year_ago,
+        'current_jobs': current_jobs,
+        'completed_jobs': completed_jobs,
+    })
