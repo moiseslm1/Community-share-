@@ -1,0 +1,16 @@
+<form method="POST">
+  {% csrf_token %}
+
+  <input type="number" name="job_id_number" class="form-control mb-3" placeholder="Job ID Number">
+  <input type="number" name="poster_id" class="form-control mb-3" placeholder="Poster ID">
+  <input type="text" name="poster_username" class="form-control mb-3" placeholder="Poster Username">
+  <input type="text" name="title" class="form-control mb-3" placeholder="Job Title">
+  <input type="email" name="email" class="form-control mb-3" placeholder="Poster Email">
+  <input type="text" name="company" class="form-control mb-3" placeholder="Company Optional">
+  <input type="number" name="location" class="form-control mb-3" placeholder="Zipcode">
+  <textarea name="description" class="form-control mb-3" placeholder="Description"></textarea>
+  <input type="number" step="0.01" name="salary" class="form-control mb-3" placeholder="Salary">
+  <input type="date" name="created_at" class="form-control mb-3">
+
+  <button type="submit" class="btn btn-primary w-100">Create Job Listing</button>
+</form>

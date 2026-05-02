@@ -267,3 +267,9 @@ def job_history(request):
         'current_jobs': current_jobs,
         'completed_jobs': completed_jobs,
     })
+
+def job_listing_view(request):
+    return render(request, 'job_listing.html')
+
+def account_view(request):
+    return render(request, 'account.html')
