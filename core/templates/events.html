@@ -13,70 +13,7 @@
     Create Post
   </a>
 </div>
-
- <!--  REAL USER POSTS -->
-
-  {% for post in posts %}
-    <div class="card mb-4 mx-auto border-0 shadow-sm"
-         style="max-width: 720px; border-radius: 20px;">
-      <div class="card-body p-4">
-
-        <div class="d-flex align-items-center gap-3 mb-3">
-          <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
-          display:flex;align-items:center;justify-content:center;font-weight:bold;">
-            {{ post.user.username|slice:":1"|upper }}
-          </div>
-          <div>
-            <div class="fw-bold">{{ post.user.username }}</div>
-            {% if post.created_at %}
-              <div class="text-muted small">
-                {{ post.created_at|date:"M d, Y • g:i A" }}
-              </div>
-            {% endif %}
-          </div>
-        </div>
-
-        {% if post.image %}
-          <img src="{{ post.image.url }}"
-               class="img-fluid mb-3"
-               style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
-        {% endif %}
-
-        <p>{{ post.caption }}</p>
-
-        <div class="d-flex gap-2">
-
-          <form method="post" action="{% url 'like_post' post.id %}">
-            {% csrf_token %}
-            <button type="submit"
-                    class="btn btn-sm rounded-pill"
-                    style="border:1px solid var(--brand);">
-              👍 {{ post.total_likes }}
-            </button>
-          </form>
-
-          <button type="button"
-                  class="btn btn-sm rounded-pill"
-                  onclick="navigator.clipboard.writeText(window.location.href)">
-            ↗ Share
-          </button>
-
-          {% if post.user == request.user %}
-            <form method="post" action="{% url 'delete_post' post.id %}">
-              {% csrf_token %}
-              <button type="submit"
-                      class="btn btn-sm rounded-pill text-danger"
-                      onclick="return confirm('Delete this post?')">
-                🗑 Delete
-              </button>
-            </form>
-          {% endif %}
-
-        </div>
-
-      </div>
-    </div>
-
+  
   <!-- 🔥 FAKE / DEMO POSTS -->
   <div class="card mb-4 mx-auto border-0 shadow-sm" style="max-width: 720px; border-radius: 20px;">
     <div class="card-body p-4">
@@ -232,6 +169,70 @@
 
     </div>
   </div>
+
+ <!--  REAL USER POSTS -->
+
+  {% for post in posts %}
+    <div class="card mb-4 mx-auto border-0 shadow-sm"
+         style="max-width: 720px; border-radius: 20px;">
+      <div class="card-body p-4">
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--mint);
+          display:flex;align-items:center;justify-content:center;font-weight:bold;">
+            {{ post.user.username|slice:":1"|upper }}
+          </div>
+          <div>
+            <div class="fw-bold">{{ post.user.username }}</div>
+            {% if post.created_at %}
+              <div class="text-muted small">
+                {{ post.created_at|date:"M d, Y • g:i A" }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if post.image %}
+          <img src="{{ post.image.url }}"
+               class="img-fluid mb-3"
+               style="border-radius:16px; max-height:400px; object-fit:cover; width:100%;">
+        {% endif %}
+
+        <p>{{ post.caption }}</p>
+
+        <div class="d-flex gap-2">
+
+          <form method="post" action="{% url 'like_post' post.id %}">
+            {% csrf_token %}
+            <button type="submit"
+                    class="btn btn-sm rounded-pill"
+                    style="border:1px solid var(--brand);">
+              👍 {{ post.total_likes }}
+            </button>
+          </form>
+
+          <button type="button"
+                  class="btn btn-sm rounded-pill"
+                  onclick="navigator.clipboard.writeText(window.location.href)">
+            ↗ Share
+          </button>
+
+          {% if post.user == request.user %}
+            <form method="post" action="{% url 'delete_post' post.id %}">
+              {% csrf_token %}
+              <button type="submit"
+                      class="btn btn-sm rounded-pill text-danger"
+                      onclick="return confirm('Delete this post?')">
+                🗑 Delete
+              </button>
+            </form>
+          {% endif %}
+
+        </div>
+
+      </div>
+    </div>
+
 
  
   {% empty %}
