@@ -2,17 +2,36 @@
 {% block title %}Offer a Service · Community Share{% endblock %}
 
 {% block content %}
+<header class="community-heading">
+<h1>Offer a Service to our Community!</h1>
+</header>
+
 <div class="container">
-
-  <h1 class="heading-center">Thank you for helping our Community!</h1>
-
   <style>
+
+    .community-heading {
+    font-size: 2.8rem;
+    font-weight: 800;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+    padding: 80px 20px;
+    letter-spacing: -0.5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #2ebdcf 25%, #4a89e2f3 100%);
+  }
+
     .offer-box {
       border: 1px solid rgba(15, 23, 42, .1);
       border-radius: 16px;
       padding: 28px;
-      background: #fff;
-      box-shadow: 0 4px 12px rgba(2, 6, 23, .05);
+      background: #ffffff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .offer-box:hover {
+      transform: translateY(-5px);
     }
 
     .offer-box h2 {
@@ -23,12 +42,24 @@
 
     .offer-box ul {
       margin-bottom: 0;
+      list-style: none;
     }
 
     .offer-box li {
       margin-bottom: 12px;
       color: rgba(15, 23, 42, .8);
       line-height: 1.6;
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+      
+    }
+    .offer-box li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #007bff;
+      font-weight: bold;
     }
 
     .offer-service-btn {
@@ -54,7 +85,7 @@
   <div class="d-flex justify-content-center">
     <div class="offer-box" style="max-width: 600px;">
       <h2>For Those Offering a Service</h2>
-      <ul style="list-style-type:circle;">
+      <ul>
         <li>Be honest about your skills and availability.</li>
         <li>Respond promptly to messages.</li>
         <li>Deliver services as promised.</li>
