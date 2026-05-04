@@ -18,4 +18,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('profile/', views.profile, name='profile'),
     path('job-history/', views.job_history, name='job_history'),
+    path('requests/incoming/', views.incoming_requests, name='incoming_requests'),
+    path('requests/accept/<int:request_id>/', views.accept_request, name='accept_request'),
+    path('requests/decline/<int:request_id>/', views.decline_request, name='decline_request'),
 ]

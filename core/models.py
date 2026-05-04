@@ -52,9 +52,13 @@ class ServiceRequest(models.Model):
 
 
 class Booking(models.Model):
-    service   = models.ForeignKey(Service, on_delete=models.CASCADE)
-    user      = models.ForeignKey(User, on_delete=models.CASCADE)
-    booked_at = models.DateTimeField(auto_now_add=True)
+    service         = models.ForeignKey(Service, null=True, blank=True, on_delete=models.CASCADE)
+    user            = models.ForeignKey(User, on_delete=models.CASCADE)
+    booked_at       = models.DateTimeField(auto_now_add=True)
+    service_request = models.ForeignKey(
+        ServiceRequest, null=True, blank=True,
+        on_delete=models.CASCADE, related_name='bookings'
+    )
 
     def __str__(self):
         return f"{self.user.username} booked {self.service.title}"
@@ -107,6 +111,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to="post_images/")
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
+
 
 
     def total_likes(self):

@@ -7,6 +7,8 @@ from django.contrib.auth import login
 import json
 import random
 import requests as http_requests
+from .models import Service, ServiceRequest, UserProfile, UserJobHistory, Post, Booking
+from django.contrib import messages
 
 CATEGORIES = {
     'assembly': {
@@ -378,3 +380,87 @@ def job_listing_view(request):
 
 def account_view(request):
     return render(request, 'account.html')
+
+@login_required
+def incoming_requests(request):
+    """
+    Shows a service provider all ServiceRequests that match ANY of the
+    categories of services THEY have posted — i.e. their "inbox" of jobs.
+    Also shows which ones they have already accepted (Booking exists).
+    """
+    # Find which categories the logged-in user offers
+    my_categories = (
+        Service.objects
+        .filter(posted_by=request.user)
+        .values_list('category', flat=True)
+        .distinct()
+    )
+ 
+    # All open requests in those categories (excluding their own)
+    open_requests = (
+        ServiceRequest.objects
+        .filter(category__in=my_categories)
+        .exclude(posted_by=request.user)
+        .order_by('-created_at')
+    )
+ 
+    # Which request IDs has this provider already accepted?
+    accepted_ids = set(
+        Booking.objects
+        .filter(user=request.user)
+        .values_list('service_request_id', flat=True)
+    )
+ 
+    return render(request, 'incoming_requests.html', {
+        'open_requests': open_requests,
+        'accepted_ids': accepted_ids,
+        'my_categories': list(my_categories),
+    })
+ 
+ 
+@login_required
+def accept_request(request, request_id):
+    """
+    Provider accepts a ServiceRequest → creates a Booking.
+    Idempotent: a second accept just redirects without creating a duplicate.
+    """
+    service_request = get_object_or_404(ServiceRequest, id=request_id)
+ 
+    # Don't let someone accept their own request
+    if service_request.posted_by == request.user:
+        messages.error(request, "You can't accept your own request.")
+        return redirect('incoming_requests')
+ 
+    already = Booking.objects.filter(
+        user=request.user,
+        service_request=service_request,
+    ).exists()
+ 
+    if not already:
+        Booking.objects.create(
+            user=request.user,
+            service_request=service_request,
+        )
+        messages.success(
+            request,
+            f"You accepted \"{service_request.title}\" — "
+            f"reach out to {service_request.posted_by.username} to coordinate!"
+        )
+    else:
+        messages.info(request, "You already accepted this request.")
+ 
+    return redirect('incoming_requests')
+ 
+ 
+@login_required
+def decline_request(request, request_id):
+    """
+    Provider removes their acceptance (un-accepts) if they change their mind.
+    """
+    service_request = get_object_or_404(ServiceRequest, id=request_id)
+    Booking.objects.filter(
+        user=request.user,
+        service_request=service_request,
+    ).delete()
+    messages.info(request, f"You un-accepted \"{service_request.title}\".")
+    return redirect('incoming_requests')
