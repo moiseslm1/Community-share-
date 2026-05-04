@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Incoming Requests · Lightning Quest{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 800px;">
+
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+      <h1 class="fw-bold mb-1">Incoming Job Requests</h1>
+      <p class="text-muted mb-0">
+        Showing requests that match your offered categories:
+        {% for cat in my_categories %}
+          <span class="badge bg-secondary">{{ cat }}</span>
+        {% endfor %}
+      </p>
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
+  </div>
+
+  <!-- Flash messages -->
+  {% if messages %}
+    {% for msg in messages %}
+      <div class="alert alert-{{ msg.tags|default:'info' }} alert-dismissible fade show" role="alert">
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if not my_categories %}
+    <div class="alert alert-warning">
+      You haven't posted any services yet, so there are no matching requests to show.
+      <a href="{% url 'create_service' %}" class="alert-link">Post a service first.</a>
+    </div>
+
+  {% elif open_requests %}
+    <div class="d-flex flex-column gap-3">
+      {% for req in open_requests %}
+
+        {% if req.id in accepted_ids %}
+          <!-- ACCEPTED STATE -->
+          <div class="card border-success">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <h5 class="mb-0">{{ req.title }}</h5>
+                    <span class="badge bg-success">✓ Accepted</span>
+                  </div>
+                  <p class="text-muted small mb-1">
+                    <i class="fa fa-location-dot me-1"></i>Zip {{ req.zip_code }}
+                    &nbsp;·&nbsp;
+                    <span class="badge bg-secondary">{{ req.get_category_display }}</span>
+                    &nbsp;·&nbsp;
+                    Posted by <strong>{{ req.posted_by.username }}</strong>
+                  </p>
+                  {% if req.description %}
+                    <p class="mb-0 small">{{ req.description }}</p>
+                  {% endif %}
+                </div>
+                <form method="post" action="{% url 'decline_request' req.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-outline-danger"
+                          onclick="return confirm('Un-accept this job?')">
+                    Un-accept
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        {% else %}
+          <!-- OPEN STATE -->
+          <div class="card border">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <h5 class="mb-1">{{ req.title }}</h5>
+                  <p class="text-muted small mb-1">
+                    <i class="fa fa-location-dot me-1"></i>Zip {{ req.zip_code }}
+                    &nbsp;·&nbsp;
+                    <span class="badge bg-warning text-dark">{{ req.get_category_display }}</span>
+                    &nbsp;·&nbsp;
+                    Posted by <strong>{{ req.posted_by.username }}</strong>
+                  </p>
+                  {% if req.description %}
+                    <p class="mb-0 small">{{ req.description }}</p>
+                  {% endif %}
+                </div>
+                <form method="post" action="{% url 'accept_request' req.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-brand btn-sm">
+                    Accept Job
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fa fa-inbox fa-3x text-muted mb-3"></i>
+      <h5 class="text-muted">No open requests in your categories right now.</h5>
+      <p class="text-muted">Check back later or
+        <a href="{% url 'feed' %}">browse the feed</a>.
+      </p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

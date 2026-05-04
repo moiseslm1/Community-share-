@@ -3,96 +3,216 @@
 {% block title %}My Profile · Community Share{% endblock %}
 
 {% block content %}
+
+<style>
+  .profile-header-container {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 5px solid #ff9100; /* Lightning orange accent */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .profile-header-container h1 {
+    font-weight: 700;
+    color: #2d3748;
+    letter-spacing: -0.5px;
+  }
+
+  .profile-header-container .text-muted {
+    font-size: 0.95rem;
+  }
+
+  .btn-outline-secondary {
+    border-radius: 20px;
+    padding: 8px 20px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .lq-profile-card {
+    border: 1px solid #e1e8ed;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .lq-profile-section-header {
+    background-color: #fcfcfd;
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  .lq-profile-title {
+    color: #111827;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+
+  /* Unique Read-Only Inputs */
+  .lq-input-readonly {
+    background-color: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    color: #6b7280 !important;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: lock; /* Custom feel */
+  }
+
+  /* Unique Labels */
+  .lq-label-caps {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9ca3af;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  /* Target the inputs and textareas for editing */
+  .lq-editable-group input, .lq-editable-group textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1.5px solid #dee2e6; /* Slightly thicker than default */
+    appearance: none;
+    border-radius: 8px; /* Matching your read-only rounding */
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  /* Focus state: Lightning Quest Orange */
+  .lq-editable-group input:focus, .lq-editable-group textarea:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #ff9100; 
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(255, 145, 0, 0.2);
+  }
+
+  /* Custom Biography styling */
+  .lq-biography-wrapper textarea {
+    min-height: 120px;
+    border-radius: 12px;
+  }
+
+  /* Style for validation errors */
+  .text-danger {
+    font-size: 0.85rem;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+
+
+
+</style>
+
 <div class="container mt-5" style="max-width: 800px;">
   <!-- Profile Header -->
-  <div class="row mb-4">
-    <div class="col-md-8">
+  <div class="profile-header-container mb-4">
+    <div class="row align-items-center"> <div class="col-md-8">
       <h1 class="mb-3">My Profile</h1>
-      <p class="text-muted">Manage your personal information and profile details</p>
+      <p class="text-muted mb-0">Manage your personal information and profile details</p>
     </div>
-    <div class="col-md-4 text-end">
+    <div class="col-md-4 text-md-end text-start mt-3 mt-md-0">
       <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
     </div>
   </div>
 
+
+
   <!-- Profile Form -->
-  <div class="card">
-    <div class="card-header bg-light">
-      <h5 class="mb-0">Profile Information</h5>
+  <div class="lq-profile-card">
+    <div class="lq-profile-section-header">
+      <h5 class="lq-profile-title">Profile Information</h5>
     </div>
-    <div class="card-body">
+
+    <div class="card-body p-4">
       <form method="post">
         {% csrf_token %}
 
         <!-- Basic User Info (Read-only) -->
         <div class="row mb-4">
           <div class="col-md-6">
-            <label class="form-label fw-bold">First Name</label>
-            <input type="text" class="form-control" value="{{ user.first_name }}" readonly>
+            <label class="lq-label-caps">First Name</label>
+            <input type="text" class="form-control lq-input-readonly" value="{{ user.first_name }}" readonly>
           </div>
           <div class="col-md-6">
-            <label class="form-label fw-bold">Last Name</label>
-            <input type="text" class="form-control" value="{{ user.last_name }}" readonly>
+            <label class="lq-label-caps">Last Name</label>
+            <input type="text" class="form-control lq-input-readonly" value="{{ user.last_name }}" readonly>
           </div>
         </div>
 
         <div class="row mb-4">
           <div class="col-md-6">
-            <label class="form-label fw-bold">Email</label>
-            <input type="email" class="form-control" value="{{ user.email }}" readonly>
+            <label class="lq-label-caps">Email</label>
+            <input type="email" class="form-control lq-input-readonly" value="{{ user.email }}" readonly>
           </div>
           <div class="col-md-6">
-            <label class="form-label fw-bold">Username</label>
-            <input type="text" class="form-control" value="{{ user.username }}" readonly>
+            <label class="lq-label-caps">Username</label>
+            <input type="text" class="form-control lq-input-readonly" value="{{ user.username }}" readonly>
           </div>
         </div>
 
+        <div class="lq-editable-group">
         <!-- Editable Profile Fields -->
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <label for="{{ form.job_title.id_for_label }}" class="form-label fw-bold">Job Title</label>
-            {{ form.job_title }}
-            {% if form.job_title.errors %}
-              <div class="text-danger">{{ form.job_title.errors }}</div>
-            {% endif %}
-          </div>
-          <div class="col-md-6">
-            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label fw-bold">Date of Birth</label>
-            {{ form.date_of_birth }}
-            {% if form.date_of_birth.errors %}
-              <div class="text-danger">{{ form.date_of_birth.errors }}</div>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <label for="{{ form.city.id_for_label }}" class="form-label fw-bold">City</label>
-            {{ form.city }}
-            {% if form.city.errors %}
-              <div class="text-danger">{{ form.city.errors }}</div>
-            {% endif %}
-          </div>
-          <div class="col-md-6">
-            <label for="{{ form.zipcode.id_for_label }}" class="form-label fw-bold">Zip Code</label>
-            {{ form.zipcode }}
-            {% if form.zipcode.errors %}
-              <div class="text-danger">{{ form.zipcode.errors }}</div>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <label for="{{ form.biography.id_for_label }}" class="form-label fw-bold">Biography</label>
-          <div class="d-flex justify-content-center">
-            <div style="width: 80%; max-width: 600px;">
-              {{ form.biography }}
-              {% if form.biography.errors %}
-                <div class="text-danger">{{ form.biography.errors }}</div>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="{{ form.job_title.id_for_label }}" class="fw-bold ">Job Title</label>
+              {{ form.job_title }}
+              {% if form.job_title.errors %}
+                <div class="text-danger">{{ form.job_title.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <label for="{{ form.date_of_birth.id_for_label }}" class=" fw-bold ">Date of Birth</label>
+              {{ form.date_of_birth }}
+              {% if form.date_of_birth.errors %}
+                <div class="text-danger">{{ form.date_of_birth.errors }}</div>
               {% endif %}
             </div>
           </div>
-          <div class="form-text text-center">Tell others about yourself, your skills, and what you can offer to the community.</div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="{{ form.city.id_for_label }}" class=" fw-bold ">City</label>
+              {{ form.city }}
+              {% if form.city.errors %}
+                <div class="text-danger">{{ form.city.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <label for="{{ form.zipcode.id_for_label }}" class=" fw-bold ">Zip Code</label>
+              {{ form.zipcode }}
+              {% if form.zipcode.errors %}
+                <div class="text-danger">{{ form.zipcode.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-4 lq-biography-wrapper">
+            <label for="{{ form.biography.id_for_label }}" class=" d-block text-center fw-bold">Biography</label>
+            <div class="d-flex justify-content-center">
+              <div style="width: 100%; max-width: 600px;">
+                {{ form.biography }}
+                {% if form.biography.errors %}
+                  <div class="text-danger">{{ form.biography.errors }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="lq-form-help-text text-center mt-2">Tell others about yourself, your skills, and what you can offer to the community.</div>
+          </div>
         </div>
 
         <!-- Submit Button -->
@@ -105,19 +225,24 @@
   </div>
 
   <!-- Additional Info -->
-  <div class="card mt-4">
-    <div class="card-header bg-light">
-      <h5 class="mb-0">Account Details</h5>
+  <div class="card mt-4 border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom-0 pb-0">
+      <h5 class="mb-0 fw-bold" style="font-size: 1rem; color: #475569">Account Details</h5>
     </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <strong>Member Since:</strong><br>
-          {{ user.date_joined|date:"F d, Y" }}
+
+    <div class="card-body pt-2">
+      <div class="lq-info-badge-container">
+
+        <div class="lq-info-badge">
+          <span class="lq-badge-label">
+            <i class="bi bi-person-check-fill lq-badge-icon icon-member"></i>Member Since&nbsp;</span>
+          <span class="lq-badge-value">{{ user.date_joined|date:"F d, Y" }}</span>
         </div>
-        <div class="col-md-6">
-          <strong>Last Login:</strong><br>
-          {{ user.last_login|date:"F d, Y \a\t g:i A" }}
+
+        <div class="lq-info-badge">
+          <span class="lq-badge-label">
+            <i class="bi bi-clock-history lq-badge-icon icon-login me-2"></i>Last Login&nbsp;</span>
+          <span class="lq-badge-value">{{ user.last_login|date:"F d, Y \a\t g:i A" }}</span>
         </div>
       </div>
     </div>
@@ -129,6 +254,57 @@
     background-color: #f8f9fa;
     opacity: 0.7;
   }
+
+  /* Container for the badges */
+  .lq-info-badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  /* Individual Badge Styling */
+  .lq-info-badge {
+    display: flex;
+    align-items: center;
+    background-color: #f1f5f9; /* Soft blue-grey background */
+    border: 1px solid #e2e8f0;
+    padding: 6px 16px;
+    border-radius: 50px; /* Makes it a pill shape */
+    transition: all 0.2s ease;
+  }
+
+  .lq-info-badge:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+  }
+
+  /* Label inside the badge (e.g., "Member Since") */
+  .lq-badge-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-right: 12px;
+    border-right: 1px solid #cbd5e0;
+    padding-right: 12px;
+  }
+
+  /* The actual date value */
+  .lq-badge-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  /* Icon colors */
+  .lq-badge-icon {
+    margin-right: 6px;
+    font-size: 0.9rem;
+  }
+
+  .lq-badge-label, .icon-member { color: #3b82f6; } /* Blue */
+  .lq-badge-label, .icon-login { color: #10b981; }  /* Green */
 </style>
 
 {% endblock %}

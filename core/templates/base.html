@@ -226,6 +226,9 @@
                         <a class="nav-link {% if request.path == '/events/' %}active{% endif %}" href="{% url 'events' %}">Community Events</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/requests/incoming/' %}active{% endif %}" href="{% url 'incoming_requests' %}">My Jobs</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/admin/">Admin</a>
                     </li>
                 </ul>

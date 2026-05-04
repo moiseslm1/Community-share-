@@ -1,5 +1,5 @@
 from django import forms
-from .models import JobListing, Service, ServiceRequest, UserProfile
+from .models import JobListing, Service, ServiceRequest, UserProfile, Post
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -23,7 +23,11 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
-
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["caption", "image"]
+        
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
