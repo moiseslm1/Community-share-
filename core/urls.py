@@ -15,4 +15,6 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('profile/', views.profile, name='profile'),
     path('job-history/', views.job_history, name='job_history'),
+    path('job-listing/', views.job_listing_view),
+    path('account/', views.account_view),
 ]
