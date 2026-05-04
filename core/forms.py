@@ -36,3 +36,15 @@ class UserProfileForm(forms.ModelForm):
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
             'biography': forms.Textarea(attrs={'rows': 4}),
         }
+
+class ProfileForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=30, required=False, label='First Name')
+    last_name = forms.CharField(max_length=30, required=False, label='Last Name')
+    
+    class Meta:
+        model = UserProfile
+        fields = ['job_title', 'date_of_birth', 'city', 'zipcode', 'biography']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'biography': forms.Textarea(attrs={'rows': 4}),
+        }

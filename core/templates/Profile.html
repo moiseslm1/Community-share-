@@ -142,18 +142,7 @@
       <form method="post">
         {% csrf_token %}
 
-        <!-- Basic User Info (Read-only) -->
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <label class="lq-label-caps">First Name</label>
-            <input type="text" class="form-control lq-input-readonly" value="{{ user.first_name }}" readonly>
-          </div>
-          <div class="col-md-6">
-            <label class="lq-label-caps">Last Name</label>
-            <input type="text" class="form-control lq-input-readonly" value="{{ user.last_name }}" readonly>
-          </div>
-        </div>
-
+        <!-- Basic User Info (Read-only except name) -->
         <div class="row mb-4">
           <div class="col-md-6">
             <label class="lq-label-caps">Email</label>
@@ -166,6 +155,23 @@
         </div>
 
         <div class="lq-editable-group">
+        <!-- Editable Fields -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="{{ form.first_name.id_for_label }}" class="fw-bold">First Name</label>
+              {{ form.first_name }}
+              {% if form.first_name.errors %}
+                <div class="text-danger">{{ form.first_name.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <label for="{{ form.last_name.id_for_label }}" class="fw-bold">Last Name</label>
+              {{ form.last_name }}
+              {% if form.last_name.errors %}
+                <div class="text-danger">{{ form.last_name.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
         <!-- Editable Profile Fields -->
           <div class="row mb-4">
             <div class="col-md-6">

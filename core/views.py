@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from .models import Service, ServiceRequest, UserProfile, UserJobHistory, Post
-from .forms import ServiceForm, ServiceRequestForm, SignUpForm, UserProfileForm, PostForm
+from .forms import ServiceForm, ServiceRequestForm, SignUpForm, UserProfileForm, PostForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 import json
@@ -340,12 +340,19 @@ def profile(request):
     profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
-        form = UserProfileForm(request.POST, instance=profile)
+        form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
+            # Update user first and last name
+            request.user.first_name = form.cleaned_data['first_name']
+            request.user.last_name = form.cleaned_data['last_name']
+            request.user.save()
             return redirect('profile')
     else:
-        form = UserProfileForm(instance=profile)
+        form = ProfileForm(instance=profile, initial={
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+        })
 
     return render(request, 'Profile.html', {
         'form': form,
