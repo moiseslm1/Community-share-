@@ -20,7 +20,6 @@ urlpatterns = [
     path('job-history/', views.job_history, name='job_history'),
     path('job-listing/', views.job_listing_view),
     path('account/', views.account_view),
-]
     path('requests/incoming/', views.incoming_requests, name='incoming_requests'),
     path('requests/accept/<int:request_id>/', views.accept_request, name='accept_request'),
     path('requests/decline/<int:request_id>/', views.decline_request, name='decline_request'),

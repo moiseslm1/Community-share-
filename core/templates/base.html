@@ -190,6 +190,19 @@
             transform: rotate(35deg)  scaleY(1.35);
             margin-right: -6px;
         }
+
+        .navbar-nav {
+            flex-wrap: nowrap;   /* prevents wrapping */
+            gap: 15px;
+        }
+
+        .navbar-nav .nav-link {
+            white-space: nowrap; /* keeps text on one line */
+        }
+
+        .navbar .btn {
+            white-space: nowrap; /* fixes Sign Up button */
+        }
      </style>
 
      {% block extra_head %}{% endblock %}
@@ -198,7 +211,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg bg-white sticky-top border-bottom">
-        <div class="container">
+        <div class="container d-flex justify-content-center">
             <a class="navbar-brand" href="/">Lightning<span class="bolt">⚡</span>Quest</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -206,7 +219,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav mx-auto d-flex align-items-center">
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                     </li>
@@ -265,7 +278,17 @@
 
   <footer>
     <div class="container d-flex justify-content-between flex-wrap gap-2">
-      <div>© {{ now|default:"" }} Lightning Quest</div>
+      <a class="navbar-brand me-4" href="/">
+        Lightning<span class="bolt">⚡</span>Quest
+      </a>
+
+      <ul class="navbar-nav d-flex align-items-center me-4">
+        <!-- your nav items -->
+      </ul>
+
+      <div class="d-flex gap-2 align-items-center">
+        <!-- login/signup -->
+      </div>
     </div>
   </footer>
 
